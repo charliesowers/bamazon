@@ -63,8 +63,9 @@ function promptUser(){
         connection.query('select * from products where item_id = ? and stock_quantity >= ?' , 
                     [id, quant], function(err,res1){
             if (err) throw err;
-            if(res1 === []){
+            if(!res1[0]){
                 console.log('Not enough in stock!');
+                connection.end();
             }
             else{
                 connection.query('UPDATE products SET stock_quantity = stock_quantity - ? WHERE item_id = ?', 
